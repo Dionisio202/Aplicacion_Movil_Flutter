@@ -219,8 +219,7 @@ class _RegisterState extends State<Register> {
                         onPressed: () async {
                           if (validateFields()) {
                             String correo = correoc.text;
-                            String nombres = nombrec.text;
-                            String apellidos = apellidoc.text;
+
                             String usuario = usuarioc.text;
                             String contrasenia = contraseniac.text;
                             String confirmarContrasenia =
