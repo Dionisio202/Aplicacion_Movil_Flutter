@@ -20,6 +20,10 @@ class _RegisterState extends State<Register> {
   final TextEditingController usuarioc = TextEditingController();
   final TextEditingController contraseniac = TextEditingController();
   final TextEditingController confirmarContraseniac = TextEditingController();
+  String nombre1 = "";
+  String nombre2 = "";
+  String ape1 = "";
+  String ape2 = "";
 
   bool validateFields() {
     return correoc.text.isNotEmpty &&
@@ -76,6 +80,21 @@ class _RegisterState extends State<Register> {
                           hintText: "Ingrese los Nombres",
                           border: OutlineInputBorder(),
                         ),
+                        onChanged: (text) {
+                          List<String> nombreParts = text.split(" ");
+                          setState(() {
+                            if (nombreParts.length > 1) {
+                              nombre1 = nombreParts[0];
+                              nombre2 = nombreParts[1];
+                            } else if (nombreParts.length == 1) {
+                              nombre1 = nombreParts[0];
+                              nombre2 = "";
+                            } else {
+                              nombre1 = "";
+                              nombre2 = "";
+                            }
+                          });
+                        },
                       ),
                       SizedBox(height: 20),
                       TextField(
@@ -85,6 +104,21 @@ class _RegisterState extends State<Register> {
                           hintText: "Ingrese los Apellidos",
                           border: OutlineInputBorder(),
                         ),
+                        onChanged: (text) {
+                          List<String> apeParts = text.split(" ");
+                          setState(() {
+                            if (apeParts.length > 1) {
+                              ape1 = apeParts[0];
+                              ape2 = apeParts[1];
+                            } else if (apeParts.length == 1) {
+                              ape1 = apeParts[0];
+                              ape2 = "";
+                            } else {
+                              ape1 = "";
+                              ape2 = "";
+                            }
+                          });
+                        },
                       ),
                       SizedBox(height: 20),
                       TextField(
@@ -198,8 +232,10 @@ class _RegisterState extends State<Register> {
                               bool registroExitoso = await insertarRegistro(
                                 correo,
                                 usuario,
-                                nombres,
-                                apellidos,
+                                nombre1,
+                                nombre2,
+                                ape1,
+                                ape2,
                                 estatura,
                                 peso,
                                 contrasenia,

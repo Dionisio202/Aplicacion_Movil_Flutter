@@ -8,8 +8,16 @@ final settings = ConnectionSettings(
   password: 'ouVHL4pCZexLZWKJu1fT',
   db: 'bdmaqgeqcojjnmapceth',
 );
-Future<bool> insertarRegistro(String correo, String usuario, String nombre,
-    String apellido, int estatura, int peso, String contrasenia) async {
+Future<bool> insertarRegistro(
+    String correo,
+    String usuario,
+    String nombres,
+    String nombres2,
+    String apellidos,
+    String apellidos2,
+    int estatura,
+    int peso,
+    String contrasenia) async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Establecer la configuración de la conexión
@@ -23,8 +31,18 @@ Future<bool> insertarRegistro(String correo, String usuario, String nombre,
 
     // Insertar un nuevo registro en la tabla "USUARIOS"
     final result = await conn.query(
-        'INSERT INTO USUARIOS (COR_ELE, NOM_USU, NOM_PER, APE_PER, EST_PER, PES_PER, CON_USU) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [correo, usuario, nombre, apellido, estatura, peso, contrasenia]);
+        'INSERT INTO USUARIOS (COR_ELE, NOM_USU, NOM_PER, NOM2_PER, APE_PER, APE2_PER, EST_PER, PES_PER, CON_USU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [
+          correo,
+          usuario,
+          nombres,
+          nombres2,
+          apellidos,
+          apellidos2,
+          estatura,
+          peso,
+          contrasenia
+        ]);
 
     // Verificar si el registro se insertó correctamente
     int n = result.affectedRows!.toInt();
