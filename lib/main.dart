@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'login.dart';
 import 'package:connectivity/connectivity.dart';
@@ -38,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     checkInternetConnection().then((isConnected) {
       if (isConnected) {
-        Timer(Duration(seconds: 5), () {
+        Timer(Duration(seconds: 4), () {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => MyappLogin()),
@@ -57,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   child: Text('Aceptar'),
                   onPressed: () {
                     Navigator.of(context).pop();
-                    exit(0); // Cierra la aplicación
+                    exit(0);
                   },
                 ),
               ],
@@ -71,34 +72,56 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(41, 135, 168, 1),
-      body: Center(
+      backgroundColor: Colors.black,
+      body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircleAvatar(
-              radius: 100.0,
-              backgroundColor: Colors.white,
-              backgroundImage: AssetImage('Imagenes/lobo.png'),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Metodologías Agiles',
-              style: TextStyle(
-                fontSize: 38,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Spacer(),
+                  CircleAvatar(
+                    radius: MediaQuery.of(context).size.width * 0.25,
+                    backgroundColor: Colors.white,
+                    backgroundImage: AssetImage('Imagenes/lobo.png'),
+                  ),
+                  SizedBox(height: 25.0),
+                  Text(
+                    'WolfCompany.Inc',
+                    style: TextStyle(
+                      fontSize: 23,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(height: 15.0),
+                  Container(
+                    height: 1.0,
+                    width: 200,
+                    color: Colors.white,
+                  ),
+                  SizedBox(height: 60.0),
+                  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                  ),
+                  Spacer(),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 60.0, bottom: 16.0),
+                      child: Text(
+                        'Version  1.0.0',
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Edison-Daniel',
-              style: TextStyle(
-                fontSize: 13,
-                color: Colors.white,
-              ),
-              textAlign: TextAlign.center,
             ),
           ],
         ),

@@ -28,7 +28,10 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  flutter_datetime_picker:
   numberpicker:
+  provider:
+  flutter_vector_icons: 
   flutter:
     sdk: flutter
   sqflite:
@@ -38,13 +41,16 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  
+  rive:
+  rxdart: 
+  flutter_bloc: 
 dev_dependencies:
   http:
   connectivity:
+  charts_flutter: ^0.12.0
   flutter_test:
     sdk: flutter
-
+  flutter_svg:
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -66,6 +72,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - Imagenes/
+  
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

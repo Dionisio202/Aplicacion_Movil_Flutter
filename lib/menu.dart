@@ -12,7 +12,7 @@ class _MyappMenuState extends State<MyappMenu> {
   int _selectedIndex = 0;
 
   Future<bool> _onWillPop() async {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => MyappLogin()),
     );
@@ -33,7 +33,7 @@ class _MyappMenuState extends State<MyappMenu> {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => Alimentacion()),
                   );
@@ -71,7 +71,7 @@ class _MyappMenuState extends State<MyappMenu> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => estadistica()),
                   );
@@ -88,7 +88,7 @@ class _MyappMenuState extends State<MyappMenu> {
                     children: [
                       Image.asset(
                         'Imagenes/estadistica.jpeg',
-                        width: 100.0,
+                        width: 150.0,
                         height: 100.0,
                       ),
                       SizedBox(
@@ -127,7 +127,7 @@ class _MyappMenuState extends State<MyappMenu> {
               IconButton(
                 icon: Icon(Icons.bar_chart),
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => estadistica()),
                   );
@@ -140,7 +140,7 @@ class _MyappMenuState extends State<MyappMenu> {
               IconButton(
                 icon: Icon(Icons.food_bank_sharp),
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => Alimentacion()),
                   );
