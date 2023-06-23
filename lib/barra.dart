@@ -4,6 +4,7 @@ import 'package:agilapp/conexion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'barraMenu.dart';
 import 'barraMenuest.dart';
@@ -55,6 +56,19 @@ class barra extends State<Sidebar>
       barrabiertaSink.add(true);
       controladora.forward();
     }
+  }
+
+  void salir() async {
+    bool loginn = false;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('email', "");
+    prefs.setBool('isLoggedIn', loginn);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MyappLogin(),
+      ),
+    );
   }
 
   @override
@@ -172,15 +186,7 @@ class barra extends State<Sidebar>
                             appitemns(
                               icono: MaterialCommunityIcons.logout,
                               titulo: "Salir",
-                              click: () {
-                                onIconPressed();
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => MyappLogin(),
-                                  ),
-                                );
-                              },
+                              click: salir,
                             ),
                           ],
                         ),
