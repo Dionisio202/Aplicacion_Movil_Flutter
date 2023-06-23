@@ -61,7 +61,9 @@ class barra extends State<Sidebar>
   void salir() async {
     bool loginn = false;
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
     prefs.setString('email', "");
+    prefs.setString('contraseña', "");
     prefs.setBool('isLoggedIn', loginn);
     Navigator.push(
       context,

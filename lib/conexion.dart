@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class sql {
   static String nombreuser = '';
   static String correouser = '';
+
   final settings = ConnectionSettings(
     host: 'bdmaqgeqcojjnmapceth-mysql.services.clever-cloud.com',
     port: 3306,
@@ -105,9 +107,6 @@ class sql {
 
     try {
       final conn = await MySqlConnection.connect(settings);
-
-      print('Conexión exitosa');
-
       var result = await conn.query(
         'SELECT COR_ELE, CON_USU ,NOM_PER FROM USUARIOS WHERE CON_USU = ? AND COR_ELE = ?',
         [contrasenia, corEle],
@@ -187,6 +186,61 @@ class sql {
           );
         },
       );
+      return false;
+    }
+  }
+
+  late SharedPreferences prefs;
+  late String email = '';
+  late String contrasenna = '';
+  late bool isLoggedIn = false;
+  Future<bool> initializePreferences() async {
+    prefs = await SharedPreferences.getInstance();
+    if (prefs != null) {
+      email = prefs.getString('email') ?? '';
+      contrasenna = prefs.getString('contraseña') ?? '';
+      isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    } else {
+      email = ''; // Valor predeterminado
+      isLoggedIn = false; // Valor predeterminado
+      contrasenna = '';
+    }
+    return isLoggedIn;
+  }
+
+  Future<bool> obtenerInfo() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    initializePreferences();
+
+    try {
+      final conn = await MySqlConnection.connect(settings);
+      var result = await conn.query(
+        'SELECT COR_ELE, CON_USU ,NOM_PER FROM USUARIOS WHERE CON_USU = ? AND COR_ELE = ?',
+        [contrasenna, email],
+      );
+
+      if (result.isNotEmpty) {
+        for (var row in result) {
+          var correoElectronico = row['COR_ELE'];
+          var contraseniaUser = row['CON_USU'];
+          nombreuser = row['NOM_PER'];
+          correouser = correoElectronico;
+          if (contrasenna == contraseniaUser && email == correoElectronico) {
+            correouser = correoElectronico;
+            await conn.close();
+            return true;
+          }
+        }
+
+        await conn.close();
+
+        return false;
+      } else {
+        await conn.close();
+
+        return false;
+      }
+    } catch (e) {
       return false;
     }
   }

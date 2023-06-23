@@ -194,8 +194,11 @@ class _MyappLoginState extends State<MyappLogin> {
                                   bool loginn = true;
                                   SharedPreferences prefs =
                                       await SharedPreferences.getInstance();
-                                  prefs.setString('email', usuario);
+                                  prefs.setString('email', nom_usu.text.trim());
+                                  prefs.setString(
+                                      'contraseña', contraseniac.text.trim());
                                   prefs.setBool('isLoggedIn', loginn);
+
                                   nom_usu.clear();
                                   contraseniac.clear();
                                   Navigator.push(

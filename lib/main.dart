@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';
+import 'conexion.dart';
 import 'login.dart';
 import 'package:connectivity/connectivity.dart';
 
@@ -47,6 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
       initializePreferences().then((isLoggedIn) {
         if (isConnected) {
           if (isLoggedIn) {
+            sql().obtenerInfo();
             Timer(Duration(seconds: 4), () {
               Navigator.pushReplacement(
                 context,
