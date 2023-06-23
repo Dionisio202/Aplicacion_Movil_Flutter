@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:agilapp/register.dart';
 import 'package:flutter/material.dart';
 import 'package:agilapp/conexion.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/services.dart';
 
@@ -190,6 +191,11 @@ class _MyappLoginState extends State<MyappLogin> {
                                 );
 
                                 if (registroExitoso) {
+                                  bool loginn = true;
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+                                  prefs.setString('email', usuario);
+                                  prefs.setBool('isLoggedIn', loginn);
                                   nom_usu.clear();
                                   contraseniac.clear();
                                   Navigator.push(
