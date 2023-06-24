@@ -244,4 +244,48 @@ class sql {
       return false;
     }
   }
+
+  Future<List<String>> obtenertipo() async {
+    List<String> listaAlimentos = [];
+
+    try {
+      final conn = await MySqlConnection.connect(settings);
+      var result = await conn.query('SELECT NOM_ALI FROM TIPO_ALIMENTO');
+
+      if (result.isNotEmpty) {
+        for (var row in result) {
+          var nombreAlimento = row['NOM_ALI'] as String;
+          listaAlimentos.add(nombreAlimento);
+        }
+      }
+
+      await conn.close();
+    } catch (e) {}
+
+    return listaAlimentos;
+  }
+
+  Future<List<String>> obtenerAlimento(String tipo) async {
+    List<String> listaAlimentos = [];
+
+    try {
+      final conn = await MySqlConnection.connect(settings);
+      var result = await conn.query(
+          'SELECT NOM_ALI FROM ALIMENTOS WHERE TIP_ALI = (SELECT ID_TIP FROM TIPO_ALIMENTO WHERE NOM_ALI = ?)',
+          [tipo]);
+
+      if (result.isNotEmpty) {
+        for (var row in result) {
+          var nombreAlimento = row['NOM_ALI'] as String;
+          listaAlimentos.add(nombreAlimento);
+        }
+      }
+
+      await conn.close();
+    } catch (e) {
+      // Manejo de excepciones
+    }
+
+    return listaAlimentos;
+  }
 }

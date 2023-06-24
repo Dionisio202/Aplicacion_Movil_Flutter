@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'conexion.dart';
+
 class Add extends StatefulWidget {
   @override
   _Addali createState() => _Addali();
@@ -9,18 +11,15 @@ class _Addali extends State<Add> {
   String? selectedFood;
   String? selectedText;
   String? selectedText2;
-
-  List<String> foods = [
-    'Manzana',
-    'Banana',
-    'Naranja',
-  ];
-
-  List<String> texts = [
-    'Texto 1',
-    'Texto 2',
-    'Texto 3',
-  ];
+  List<String> texts = [];
+  List<String> alimento = [];
+  void initializeData() {
+    sql().obtenertipo().then((tipos) {
+      setState(() {
+        texts = tipos;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +64,7 @@ class _Addali extends State<Add> {
                         setState(() {
                           selectedText = newValue;
                         });
+                        initializeData();
                       },
                       items: texts.map((text) {
                         return DropdownMenuItem<String>(
@@ -100,7 +100,7 @@ class _Addali extends State<Add> {
                           selectedText = newValue;
                         });
                       },
-                      items: texts.map((text) {
+                      items: alimento.map((text) {
                         return DropdownMenuItem<String>(
                           value: text,
                           child: Text(text),
