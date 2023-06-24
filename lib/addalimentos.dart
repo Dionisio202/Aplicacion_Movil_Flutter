@@ -8,17 +8,32 @@ class Add extends StatefulWidget {
 }
 
 class _Addali extends State<Add> {
+  String? selectedType;
   String? selectedFood;
-  String? selectedText;
-  String? selectedText2;
+  late String ali;
   List<String> texts = [];
   List<String> alimento = [];
+
   void initializeData() {
     sql().obtenertipo().then((tipos) {
       setState(() {
         texts = tipos;
       });
     });
+  }
+
+  void initializeData2() {
+    sql().obtenerAlimento(ali).then((tipos) {
+      setState(() {
+        alimento = tipos.toSet().toList();
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initializeData();
   }
 
   @override
@@ -59,12 +74,15 @@ class _Addali extends State<Add> {
                       color: Colors.white,
                     ),
                     child: DropdownButton<String>(
-                      value: selectedText,
+                      value: selectedType,
                       onChanged: (newValue) {
                         setState(() {
-                          selectedText = newValue;
+                          selectedType = newValue;
+                          selectedFood =
+                              null; // Reiniciar el valor seleccionado de alimentos
                         });
-                        initializeData();
+                        ali = selectedType.toString();
+                        initializeData2();
                       },
                       items: texts.map((text) {
                         return DropdownMenuItem<String>(
@@ -94,11 +112,12 @@ class _Addali extends State<Add> {
                       color: Colors.white,
                     ),
                     child: DropdownButton<String>(
-                      value: selectedText,
+                      value: selectedFood,
                       onChanged: (newValue) {
                         setState(() {
-                          selectedText = newValue;
+                          selectedFood = newValue;
                         });
+                        print(ali);
                       },
                       items: alimento.map((text) {
                         return DropdownMenuItem<String>(
