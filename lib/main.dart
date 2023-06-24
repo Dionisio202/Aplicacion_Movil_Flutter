@@ -49,6 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
         if (isConnected) {
           if (isLoggedIn) {
             sql().obtenerInfo();
+            print(email);
             Timer(Duration(seconds: 4), () {
               Navigator.pushReplacement(
                 context,

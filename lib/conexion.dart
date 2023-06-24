@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 class sql {
   static String nombreuser = '';
@@ -173,8 +174,8 @@ class sql {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Error de conexión'),
-            content: Text(
-                'Hubo un problema al conectarse a la base de datos. Por favor, inténtalo de nuevo más tarde. \n $e'),
+            content: const Text(
+                'Hubo un problema al conectarse a la base de datos. Por favor, inténtalo de nuevo más tarde.'),
             actions: <Widget>[
               TextButton(
                 child: Text('Cerrar'),
@@ -257,6 +258,7 @@ class sql {
           var nombreAlimento = row['NOM_ALI'] as String;
           listaAlimentos.add(nombreAlimento);
         }
+        await conn.close();
       }
 
       await conn.close();
@@ -279,6 +281,7 @@ class sql {
           var nombreAlimento = row['NOM_ALI'] as String;
           listaAlimentos.add(nombreAlimento);
         }
+        await conn.close();
       }
 
       await conn.close();
@@ -287,5 +290,44 @@ class sql {
     }
 
     return listaAlimentos;
+  }
+
+  Future<bool> insertarAlimento(String alimento) async {
+    initializePreferences();
+    try {
+      final conn = await MySqlConnection.connect(settings);
+
+      var result = await conn.query(
+        'SELECT ID_ALI FROM ALIMENTOS WHERE  NOM_ALI = ?',
+        [alimento],
+      );
+
+      if (result.isNotEmpty) {
+        for (var row in result) {
+          var id = row['ID_ALI'] as int;
+
+          var now = DateTime.now();
+          var formattedDate =
+              DateFormat('yyyy-MM-dd').format(now); // Formatea la fecha actual
+
+          await conn.query(
+            'INSERT INTO DETALLE_ALIMENTOS (COR_ELE, ID_ALI, FEC_ALI) VALUES (?, ?, ?)',
+            [
+              email,
+              id,
+              formattedDate,
+            ],
+          );
+        }
+        return true;
+      }
+      await conn.close();
+      return false;
+    } catch (e) {
+      print('Error al insertar alimento: $e');
+      print("Error de correo vacío");
+      print(email);
+      return false;
+    }
   }
 }
