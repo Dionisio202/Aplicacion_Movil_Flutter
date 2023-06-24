@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 import 'addalimentos.dart';
 
@@ -75,6 +76,18 @@ class _AlimentacionState extends State<Alimentacion> {
     }
   }
 
+  List<charts.Series<FoodData, DateTime>> createSeriesData() {
+    return [
+      charts.Series<FoodData, DateTime>(
+        id: 'calorias',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (FoodData foodData, _) => foodData.fecha,
+        measureFn: (FoodData foodData, _) => foodData.calorias,
+        data: foodDataList,
+      )
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,11 +95,8 @@ class _AlimentacionState extends State<Alimentacion> {
       body: SafeArea(
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment
-                .start, // Alinea los elementos en la parte superior
-            crossAxisAlignment: CrossAxisAlignment
-                .center, // Centra horizontalmente los elementos
-
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 30),
               Text(
@@ -205,14 +215,38 @@ class _AlimentacionState extends State<Alimentacion> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: Color(0xFFBFBF3D), // Establece el color del borde
-                      width: 2.0, // Establece el ancho del borde
+                      color: Color(0xFFBFBF3D),
+                      width: 2.0,
                     ),
                   ),
                   child: Icon(
                     Icons.add,
                     color: Color(0xFFBFBF3D),
                     size: 30,
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.all(16.0),
+                  child: charts.TimeSeriesChart(
+                    createSeriesData(),
+                    animate: true,
+                    dateTimeFactory: const charts.LocalDateTimeFactory(),
+                    defaultRenderer:
+                        charts.LineRendererConfig(includePoints: true),
+                    primaryMeasureAxis: const charts.NumericAxisSpec(
+                      tickProviderSpec:
+                          charts.BasicNumericTickProviderSpec(zeroBound: false),
+                    ),
+                    domainAxis: const charts.DateTimeAxisSpec(
+                      tickFormatterSpec: charts.AutoDateTimeTickFormatterSpec(
+                          day: charts.TimeFormatterSpec(format: 'dd/MM')),
+                    ),
+                    behaviors: [
+                      charts.SeriesLegend(),
+                    ],
                   ),
                 ),
               ),
@@ -229,3 +263,19 @@ class _AlimentacionState extends State<Alimentacion> {
     );
   }
 }
+
+class FoodData {
+  final DateTime fecha;
+  final String nombre;
+  final double calorias;
+
+  FoodData(this.fecha, this.nombre, this.calorias);
+}
+
+final List<FoodData> foodDataList = [
+  FoodData(DateTime(2023, 6, 1), 'Alimento 1', 100),
+  FoodData(DateTime(2023, 6, 5), 'Alimento 2', 200),
+  FoodData(DateTime(2023, 6, 10), 'Alimento 3', 150),
+  FoodData(DateTime(2023, 6, 15), 'Alimento 4', 180),
+  FoodData(DateTime(2023, 6, 20), 'Alimento 5', 220),
+];
