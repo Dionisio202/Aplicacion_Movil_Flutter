@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'addalimentos.dart';
+
 class Alimentacion extends StatefulWidget {
   @override
   _AlimentacionState createState() => _AlimentacionState();
@@ -189,7 +191,12 @@ class _AlimentacionState extends State<Alimentacion> {
               SizedBox(height: 20),
               FloatingActionButton(
                 onPressed: () {
-                  // Acción del botón
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Add(),
+                    ),
+                  );
                 },
                 backgroundColor: Colors.transparent,
                 child: Container(
