@@ -40,51 +40,53 @@ class _estadisticaState extends State<estadisticaalimento> {
     ];
 
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: SizedBox(
-                  width: MediaQuery.of(context)
-                      .size
-                      .width, // Asegurar que el gráfico ocupe todo el ancho disponible
-                  height: 350.0,
-                  child: charts.BarChart(
-                    series,
-                    selectionModels: [
-                      charts.SelectionModelConfig(
-                        changedListener: (charts.SelectionModel model) {
-                          if (model.hasDatumSelection) {
-                            pointerAmount = model.selectedSeries[0]
-                                .measureFn(model.selectedDatum[0].index)
-                                ?.toStringAsFixed(2);
-                            pointerAlimento = model.selectedSeries[0]
-                                .domainFn(model.selectedDatum[0].index);
-                          }
-                        },
-                      ),
-                    ],
-                    behaviors: [
-                      charts.LinePointHighlighter(
-                          symbolRenderer: MySymbolRenderer()),
-                    ],
-                    domainAxis: charts.OrdinalAxisSpec(
-                      renderSpec: charts.SmallTickRendererSpec(
-                        labelRotation:
-                            45, // Rotación de las etiquetas en 45 grados
-                        labelStyle: charts.TextStyleSpec(
-                          fontSize: 10,
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: SizedBox(
+                    width: MediaQuery.of(context)
+                        .size
+                        .width, // Asegurar que el gráfico ocupe todo el ancho disponible
+                    height: 350.0,
+                    child: charts.BarChart(
+                      series,
+                      selectionModels: [
+                        charts.SelectionModelConfig(
+                          changedListener: (charts.SelectionModel model) {
+                            if (model.hasDatumSelection) {
+                              pointerAmount = model.selectedSeries[0]
+                                  .measureFn(model.selectedDatum[0].index)
+                                  ?.toStringAsFixed(2);
+                              pointerAlimento = model.selectedSeries[0]
+                                  .domainFn(model.selectedDatum[0].index);
+                            }
+                          },
+                        ),
+                      ],
+                      behaviors: [
+                        charts.LinePointHighlighter(
+                            symbolRenderer: MySymbolRenderer()),
+                      ],
+                      domainAxis: charts.OrdinalAxisSpec(
+                        renderSpec: charts.SmallTickRendererSpec(
+                          labelRotation:
+                              45, // Rotación de las etiquetas en 45 grados
+                          labelStyle: charts.TextStyleSpec(
+                            fontSize: 10,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -109,8 +111,8 @@ class MySymbolRenderer extends charts.CircleSymbolRenderer {
       Rectangle(
         bounds.left - 25,
         bounds.top - 30,
-        bounds.width + 48,
-        bounds.height + 18,
+        bounds.width + 100,
+        bounds.height + 25,
       ),
       fill: charts.ColorUtil.fromDartColor(Colors.grey),
       stroke: charts.ColorUtil.fromDartColor(Colors.green),
