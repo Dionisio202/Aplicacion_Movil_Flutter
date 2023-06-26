@@ -224,8 +224,10 @@ class _AlimentacionState extends State<Alimentacion> {
                 Container(
                   height: 400, // Establece la altura deseada para el gráfico
                   width: 370,
-                  child:
-                      estadisticaalimento(), // Crea una instancia de la clase "estadistica" y colócala dentro del contenedor
+                  child: estadisticaalimento(
+                    endDate: selectedDate2 ?? DateTime.now(),
+                    startDate: selectedDate ?? DateTime.now(),
+                  ), // Crea una instancia de la clase "estadistica" y colócala dentro del contenedor
                 ),
                 SizedBox(height: 20),
                 Image.asset(

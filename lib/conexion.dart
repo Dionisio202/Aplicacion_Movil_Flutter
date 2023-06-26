@@ -1,3 +1,5 @@
+import 'package:agilapp/alimentacion.dart';
+import 'package:agilapp/estadisticalimento.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
@@ -329,5 +331,35 @@ class sql {
       print(email);
       return false;
     }
+  }
+
+  Future<List<Expenses>> obtenerAlimentoCalorias(
+      String fechaInicial, String fechaFinal) async {
+    initializePreferences();
+    List<Expenses> data = [];
+
+    try {
+      final conn = await MySqlConnection.connect(settings);
+      var result = await conn.query(
+          'SELECT ALIMENTOS.NOM_ALI, ALIMENTOS.CAL_ALI FROM ALIMENTOS INNER JOIN DETALLE_ALIMENTOS ON ALIMENTOS.ID_ALI = DETALLE_ALIMENTOS.ID_ALI WHERE DETALLE_ALIMENTOS.COR_ELE = ? AND DETALLE_ALIMENTOS.FEC_ALI BETWEEN ? AND ?',
+          [email, fechaInicial, fechaFinal]);
+
+      if (result.isNotEmpty) {
+        // Procesar los resultados
+        for (var row in result) {
+          var nombreAlimento = row['NOM_ALI'];
+          var caloriasAlimento = row['CAL_ALI'];
+          data.add(Expenses(nombreAlimento, caloriasAlimento));
+        }
+        await conn.close();
+        return data; // Agregar retorno aquí
+      }
+
+      await conn.close();
+    } catch (e) {
+      // Manejo de excepciones
+    }
+
+    return data;
   }
 }

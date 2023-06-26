@@ -1,3 +1,4 @@
+import 'package:agilapp/alimentacion.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:charts_flutter/src/text_element.dart' as elements;
@@ -123,7 +124,7 @@ class MySymbolRenderer extends charts.CircleSymbolRenderer {
 
     canvas.drawText(
         elements.TextElement(
-            'Alimento: ${_estadisticaState.pointerAlimento} \nIMC: ${_estadisticaState.pointerAmount}',
+            'Alimento: ${_estadisticaState.pointerAlimento} \nCalorias: ${_estadisticaState.pointerAmount}',
             style: myStyle),
         (bounds.left - 20).round(),
         (bounds.top - 26).round());
