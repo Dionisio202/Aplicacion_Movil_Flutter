@@ -7,8 +7,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
 class sql {
+  static DateTime startDate = DateTime.now();
+  static DateTime endDate = DateTime.now();
   static String nombreuser = '';
   static String correouser = '';
+  static List<DateTime> miArrayGlobal = [];
+  sql();
+  sql.obtenerfecha(DateTime fechaIni, DateTime fechaFin) {
+    miArrayGlobal.add(fechaIni);
+    miArrayGlobal.add(fechaFin);
+    startDate = fechaIni;
+    endDate = fechaFin;
+  }
 
   final settings = ConnectionSettings(
     host: 'bdmaqgeqcojjnmapceth-mysql.services.clever-cloud.com',
@@ -296,6 +306,7 @@ class sql {
 
   Future<bool> insertarAlimento(String alimento) async {
     initializePreferences();
+
     try {
       final conn = await MySqlConnection.connect(settings);
 
@@ -333,19 +344,19 @@ class sql {
     }
   }
 
-  Future<List<Expenses>> obtenerAlimentoCalorias(
-      String fechaInicial, String fechaFinal) async {
+  Future<List<Expenses>> obtenerAlimentoCalorias() async {
     initializePreferences();
     List<Expenses> data = [];
-
+    print(startDate);
+    print(endDate);
     try {
       final conn = await MySqlConnection.connect(settings);
       var result = await conn.query(
           'SELECT ALIMENTOS.NOM_ALI, ALIMENTOS.CAL_ALI FROM ALIMENTOS INNER JOIN DETALLE_ALIMENTOS ON ALIMENTOS.ID_ALI = DETALLE_ALIMENTOS.ID_ALI WHERE DETALLE_ALIMENTOS.COR_ELE = ? AND DETALLE_ALIMENTOS.FEC_ALI BETWEEN ? AND ?',
-          [email, fechaInicial, fechaFinal]);
+          [email, startDate, endDate]);
 
       if (result.isNotEmpty) {
-        // Procesar los resultados
+        print("Se obtienen datos");
         for (var row in result) {
           var nombreAlimento = row['NOM_ALI'];
           var caloriasAlimento = row['CAL_ALI'];
@@ -357,7 +368,7 @@ class sql {
 
       await conn.close();
     } catch (e) {
-      // Manejo de excepciones
+      print("No conextado");
     }
 
     return data;

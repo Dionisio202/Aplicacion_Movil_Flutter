@@ -1,3 +1,4 @@
+import 'package:agilapp/conexion.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -160,6 +161,7 @@ class _AlimentacionState extends State<Alimentacion> {
                     readOnly: true,
                     onTap: () {
                       _selectDate2(context);
+                      sql.obtenerfecha(selectedDate!, selectedDate2!);
                     },
                     decoration: InputDecoration(
                       filled: true,
@@ -222,12 +224,9 @@ class _AlimentacionState extends State<Alimentacion> {
                 ),
                 SizedBox(height: 20),
                 Container(
-                  height: 400, // Establece la altura deseada para el gráfico
+                  height: 400,
                   width: 370,
-                  child: estadisticaalimento(
-                    endDate: selectedDate2 ?? DateTime.now(),
-                    startDate: selectedDate ?? DateTime.now(),
-                  ), // Crea una instancia de la clase "estadistica" y colócala dentro del contenedor
+                  child: estadisticaalimento(),
                 ),
                 SizedBox(height: 20),
                 Image.asset(

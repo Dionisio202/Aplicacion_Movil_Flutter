@@ -1,9 +1,10 @@
-import 'package:agilapp/alimentacion.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:charts_flutter/src/text_element.dart' as elements;
 import 'package:charts_flutter/src/text_style.dart' as styles;
 import 'dart:math';
+
+import 'conexion.dart';
 
 class estadisticaalimento extends StatefulWidget {
   @override

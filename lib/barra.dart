@@ -170,6 +170,7 @@ class barra extends State<Sidebar>
                               titulo: "IMC",
                               click: () {
                                 onIconPressed();
+                                sql().obtenerAlimentoCalorias();
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
