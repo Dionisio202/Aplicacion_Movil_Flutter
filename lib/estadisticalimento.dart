@@ -16,27 +16,29 @@ class _estadisticaState extends State<estadisticaalimento> {
   static String? pointerAlimento;
   double visibleBars = 2; // Número inicial de barras visibles
 
+  List<Expenses> data = []; // Variable de estado para almacenar los datos
+
+  @override
+  void initState() {
+    super.initState();
+    obtenerDatos(); // Llama al método para obtener los datos al iniciar
+  }
+
+  Future<void> obtenerDatos() async {
+    List<Expenses> result = await sql()
+        .obtenerAlimentoCalorias(); // Obtiene los datos del método estático
+    setState(() {
+      data = result; // Actualiza la variable de estado con los datos obtenidos
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final data = [
-      Expenses('Manzana', 22.0),
-      Expenses('Plátano', 21.5),
-      Expenses('Naranja', 20.8),
-      Expenses('Pera', 21.2),
-      Expenses('Uva', 22.5),
-      Expenses('Piña', 23.1),
-      Expenses('Sandía', 20.5),
-      Expenses('Melón', 22.8),
-      Expenses('Fresa', 20.3),
-      Expenses('Mango', 21.7),
-      Expenses('Papaya', 22.3),
-      Expenses('Coco', 19.8),
-    ];
     List<charts.Series<Expenses, String>> series = [
       charts.Series<Expenses, String>(
         id: 'Lineal',
-        domainFn: (v, i) => v.alimento,
-        measureFn: (v, i) => v.imc,
+        domainFn: (v, i) => v.nombreAlimento,
+        measureFn: (v, i) => v.caloriasAlimento,
         data: data,
       ),
     ];
@@ -51,9 +53,7 @@ class _estadisticaState extends State<estadisticaalimento> {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: SizedBox(
-                    width: MediaQuery.of(context)
-                        .size
-                        .width, // Asegurar que el gráfico ocupe todo el ancho disponible
+                    width: MediaQuery.of(context).size.width,
                     height: 350.0,
                     child: charts.BarChart(
                       series,
@@ -76,8 +76,7 @@ class _estadisticaState extends State<estadisticaalimento> {
                       ],
                       domainAxis: charts.OrdinalAxisSpec(
                         renderSpec: charts.SmallTickRendererSpec(
-                          labelRotation:
-                              45, // Rotación de las etiquetas en 45 grados
+                          labelRotation: 45,
                           labelStyle: charts.TextStyleSpec(
                             fontSize: 10,
                           ),
@@ -133,7 +132,14 @@ class MySymbolRenderer extends charts.CircleSymbolRenderer {
 }
 
 class Expenses {
-  final String alimento;
-  final double imc;
-  Expenses(this.alimento, this.imc);
+  final String nombreAlimento;
+  final double caloriasAlimento;
+
+  Expenses(this.nombreAlimento, this.caloriasAlimento);
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: estadisticaalimento(),
+  ));
 }

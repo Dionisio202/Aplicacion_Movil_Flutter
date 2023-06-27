@@ -347,28 +347,25 @@ class sql {
   Future<List<Expenses>> obtenerAlimentoCalorias() async {
     initializePreferences();
     List<Expenses> data = [];
-    print(startDate);
-    print(endDate);
+
     try {
       final conn = await MySqlConnection.connect(settings);
       var result = await conn.query(
           'SELECT ALIMENTOS.NOM_ALI, ALIMENTOS.CAL_ALI FROM ALIMENTOS INNER JOIN DETALLE_ALIMENTOS ON ALIMENTOS.ID_ALI = DETALLE_ALIMENTOS.ID_ALI WHERE DETALLE_ALIMENTOS.COR_ELE = ? AND DETALLE_ALIMENTOS.FEC_ALI BETWEEN ? AND ?',
-          [email, startDate, endDate]);
+          [email, startDate.toUtc(), endDate.toUtc()]);
 
       if (result.isNotEmpty) {
         print("Se obtienen datos");
         for (var row in result) {
           var nombreAlimento = row['NOM_ALI'];
-          var caloriasAlimento = row['CAL_ALI'];
-          data.add(Expenses(nombreAlimento, caloriasAlimento));
+          var caloriasAlimento = int.parse(row['CAL_ALI'].toString());
+          data.add(Expenses(nombreAlimento, caloriasAlimento.toDouble()));
         }
-        await conn.close();
-        return data; // Agregar retorno aquí
       }
 
-      await conn.close();
+      await conn.close(); // Cerrar la conexión aquí
     } catch (e) {
-      print("No conextado");
+      print("No conectado $e");
     }
 
     return data;

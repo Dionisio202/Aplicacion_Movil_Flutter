@@ -171,6 +171,7 @@ class barra extends State<Sidebar>
                               click: () {
                                 onIconPressed();
                                 sql().obtenerAlimentoCalorias();
+
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
