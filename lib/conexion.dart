@@ -7,8 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
 class sql {
-  static DateTime startDate = DateTime.now();
-  static DateTime endDate = DateTime.now();
+  static final DateTime startDate = DateTime.now().toUtc();
+  static final DateTime endDate = DateTime.now().toUtc();
   static String nombreuser = '';
   static String correouser = '';
   static List<DateTime> miArrayGlobal = [];
@@ -16,8 +16,8 @@ class sql {
   sql.obtenerfecha(DateTime fechaIni, DateTime fechaFin) {
     miArrayGlobal.add(fechaIni);
     miArrayGlobal.add(fechaFin);
-    startDate = fechaIni;
-    endDate = fechaFin;
+    startDate = fechaIni.toUtc();
+    endDate = fechaFin.toUtc();
   }
 
   final settings = ConnectionSettings(
@@ -320,8 +320,7 @@ class sql {
           var id = row['ID_ALI'] as int;
 
           var now = DateTime.now();
-          var formattedDate =
-              DateFormat('yyyy-MM-dd').format(now); // Formatea la fecha actual
+          var formattedDate = DateFormat('yyyy-MM-dd').format(now);
 
           await conn.query(
             'INSERT INTO DETALLE_ALIMENTOS (COR_ELE, ID_ALI, FEC_ALI) VALUES (?, ?, ?)',
@@ -349,10 +348,12 @@ class sql {
     List<Expenses> data = [];
 
     try {
+      var formattedDate = DateFormat('yyyy-MM-dd').format(startDate);
+      var formattedDate2 = DateFormat('yyyy-MM-dd').format(endDate);
       final conn = await MySqlConnection.connect(settings);
       var result = await conn.query(
-          'SELECT ALIMENTOS.NOM_ALI, ALIMENTOS.CAL_ALI FROM ALIMENTOS INNER JOIN DETALLE_ALIMENTOS ON ALIMENTOS.ID_ALI = DETALLE_ALIMENTOS.ID_ALI WHERE DETALLE_ALIMENTOS.COR_ELE = ? AND DETALLE_ALIMENTOS.FEC_ALI BETWEEN ? AND ?',
-          [email, startDate.toUtc(), endDate.toUtc()]);
+          'SELECT NOM_ALI, CAL_ALI FROM ALIMENTOS WHERE ID_ALI IN (SELECT ID_ALI FROM DETALLE_ALIMENTOS WHERE COR_ELE = ? AND FEC_ALI BETWEEN ? AND ?)',
+          [email, formattedDate, formattedDate2]);
 
       if (result.isNotEmpty) {
         print("Se obtienen datos");

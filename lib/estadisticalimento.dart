@@ -14,6 +14,7 @@ class estadisticaalimento extends StatefulWidget {
 class _estadisticaState extends State<estadisticaalimento> {
   static String? pointerAmount;
   static String? pointerAlimento;
+
   double visibleBars = 2; // Número inicial de barras visibles
 
   List<Expenses> data = []; // Variable de estado para almacenar los datos
