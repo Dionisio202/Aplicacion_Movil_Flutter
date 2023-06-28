@@ -16,6 +16,7 @@ DateTime? selectedDate;
 DateTime? selectedDate2;
 String fc = '';
 bool fecha = false;
+bool fecha2 = false;
 TextEditingController fechag = TextEditingController();
 
 TextEditingController fechag2 = TextEditingController();
@@ -67,15 +68,15 @@ class _AlimentacionState extends State<Alimentacion> {
 
       if (ageInYears >= 0) {
         setState(() {
-          fecha = true;
+          fecha2 = true;
           fechag2.text = DateFormat('dd/MM/yyyy').format(selectedDate2!);
         });
       } else {
-        fecha = false;
+        fecha2 = false;
         fechag2.text = "Fecha no valida";
       }
     } else {
-      fecha = false;
+      fecha2 = false;
     }
   }
 
@@ -196,8 +197,8 @@ class _AlimentacionState extends State<Alimentacion> {
                 SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () {
-                    sql.obtenerfecha(selectedDate!, selectedDate2!);
-                    if (fechag != null && fechag2 != null) {
+                    if (fecha && fecha2) {
+                      sql.obtenerfecha(selectedDate!, selectedDate2!);
                       sql().obtenerAlimentoCalorias();
                       Navigator.push(
                         context,
@@ -206,6 +207,7 @@ class _AlimentacionState extends State<Alimentacion> {
                         ),
                       );
                     } else {
+                      print("hola");
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {

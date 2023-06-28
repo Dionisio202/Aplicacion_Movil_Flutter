@@ -141,7 +141,7 @@ class barra extends State<Sidebar>
                             ),
                             appitemns(
                               icono: Icons.home,
-                              titulo: "Home",
+                              titulo: "Inicio",
                               click: () {
                                 onIconPressed();
                                 Navigator.push(
