@@ -7,8 +7,12 @@ import 'dart:math';
 import 'conexion.dart';
 
 class estadisticaalimento extends StatefulWidget {
+  final DateTime startDate;
+  final DateTime endDate;
+
+  estadisticaalimento({required this.startDate, required this.endDate});
   @override
-  _estadisticaState createState() => _estadisticaState();
+  _estadisticaState createState() => _estadisticaState(startDate, endDate);
 }
 
 class _estadisticaState extends State<estadisticaalimento> {
@@ -18,7 +22,10 @@ class _estadisticaState extends State<estadisticaalimento> {
   double visibleBars = 2; // Número inicial de barras visibles
 
   List<Expenses> data = []; // Variable de estado para almacenar los datos
+  DateTime startDate;
+  DateTime endDate;
 
+  _estadisticaState(this.startDate, this.endDate);
   @override
   void initState() {
     super.initState();
@@ -41,53 +48,72 @@ class _estadisticaState extends State<estadisticaalimento> {
         domainFn: (v, i) => v.nombreAlimento,
         measureFn: (v, i) => v.caloriasAlimento,
         data: data,
+        colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color(0xFF4095E5)),
       ),
     ];
+    estadisticaalimento(
+        startDate: DateTime.now(),
+        endDate: DateTime.now().add(Duration(days: 7)));
 
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 350.0,
-                    child: charts.BarChart(
-                      series,
-                      selectionModels: [
-                        charts.SelectionModelConfig(
-                          changedListener: (charts.SelectionModel model) {
-                            if (model.hasDatumSelection) {
-                              pointerAmount = model.selectedSeries[0]
-                                  .measureFn(model.selectedDatum[0].index)
-                                  ?.toStringAsFixed(2);
-                              pointerAlimento = model.selectedSeries[0]
-                                  .domainFn(model.selectedDatum[0].index);
-                            }
-                          },
+      body: Container(
+        color: Colors.black, // Color de fondo negro
+        child: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 350.0,
+                      child: charts.BarChart(
+                        series,
+                        selectionModels: [
+                          charts.SelectionModelConfig(
+                            changedListener: (charts.SelectionModel model) {
+                              if (model.hasDatumSelection) {
+                                pointerAmount = model.selectedSeries[0]
+                                    .measureFn(model.selectedDatum[0].index)
+                                    ?.toStringAsFixed(2);
+                                pointerAlimento = model.selectedSeries[0]
+                                    .domainFn(model.selectedDatum[0].index);
+                              }
+                            },
+                          ),
+                        ],
+                        behaviors: [
+                          charts.LinePointHighlighter(
+                              symbolRenderer: MySymbolRenderer()),
+                        ],
+                        domainAxis: charts.OrdinalAxisSpec(
+                          renderSpec: charts.SmallTickRendererSpec(
+                            labelRotation: 45,
+                            labelStyle: charts.TextStyleSpec(
+                              fontSize: 10,
+                              color: charts.MaterialPalette.white,
+                            ),
+                          ),
                         ),
-                      ],
-                      behaviors: [
-                        charts.LinePointHighlighter(
-                            symbolRenderer: MySymbolRenderer()),
-                      ],
-                      domainAxis: charts.OrdinalAxisSpec(
-                        renderSpec: charts.SmallTickRendererSpec(
-                          labelRotation: 45,
-                          labelStyle: charts.TextStyleSpec(
-                            fontSize: 10,
+                        primaryMeasureAxis: charts.NumericAxisSpec(
+                          renderSpec: charts.GridlineRendererSpec(
+                            labelStyle: charts.TextStyleSpec(
+                              fontSize: 10,
+                              color: charts.MaterialPalette.white,
+                            ),
+                            lineStyle: charts.LineStyleSpec(
+                              color: charts.MaterialPalette.white,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -111,8 +137,8 @@ class MySymbolRenderer extends charts.CircleSymbolRenderer {
         strokeWidthPx: strokeWidthPx);
     canvas.drawRect(
       Rectangle(
-        bounds.left - 25,
-        bounds.top - 30,
+        bounds.left - 35,
+        bounds.top - 20,
         bounds.width + 100,
         bounds.height + 25,
       ),
@@ -122,13 +148,15 @@ class MySymbolRenderer extends charts.CircleSymbolRenderer {
     );
     var myStyle = styles.TextStyle();
     myStyle.fontSize = 10;
+    myStyle.color =
+        charts.MaterialPalette.white; // Color de la etiqueta en blanco
 
     canvas.drawText(
         elements.TextElement(
             'Alimento: ${_estadisticaState.pointerAlimento} \nCalorias: ${_estadisticaState.pointerAmount}',
             style: myStyle),
-        (bounds.left - 20).round(),
-        (bounds.top - 26).round());
+        (bounds.left - 30).round(),
+        (bounds.top - 10).round());
   }
 }
 
@@ -137,10 +165,4 @@ class Expenses {
   final double caloriasAlimento;
 
   Expenses(this.nombreAlimento, this.caloriasAlimento);
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: estadisticaalimento(),
-  ));
 }

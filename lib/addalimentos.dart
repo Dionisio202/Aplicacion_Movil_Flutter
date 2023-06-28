@@ -58,6 +58,14 @@ class _Addali extends State<Add> {
                   ),
                 ),
               ),
+              SizedBox(height: 20),
+              Center(
+                child: Image.asset(
+                  'Imagenes/comida.png',
+                  height: 160,
+                  width: 160,
+                ),
+              ),
               Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Row(

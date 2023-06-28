@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import 'addalimentos.dart';
 
+import 'cargaralimento.dart';
 import 'estadisticalimento.dart';
 
 class Alimentacion extends StatefulWidget {
@@ -161,7 +162,6 @@ class _AlimentacionState extends State<Alimentacion> {
                     readOnly: true,
                     onTap: () {
                       _selectDate2(context);
-                      sql.obtenerfecha(selectedDate!, selectedDate2!);
                     },
                     decoration: InputDecoration(
                       filled: true,
@@ -186,6 +186,53 @@ class _AlimentacionState extends State<Alimentacion> {
                   ),
                 ),
                 SizedBox(height: 20),
+                Text(
+                  'Mostrar alimentos',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    sql.obtenerfecha(selectedDate!, selectedDate2!);
+                    if (fechag != null && fechag2 != null) {
+                      sql().obtenerAlimentoCalorias();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Carga(),
+                        ),
+                      );
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: const Text('Seleccione una fecha'),
+                            actions: <Widget>[
+                              TextButton(
+                                child: Text('Cerrar'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                  },
+                  child: Text('Mostrar'),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFFBFBF3D),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
                 Text(
                   'Añadir alimentación',
                   style: TextStyle(
@@ -226,13 +273,10 @@ class _AlimentacionState extends State<Alimentacion> {
                 Container(
                   height: 400,
                   width: 370,
-                  child: estadisticaalimento(),
-                ),
-                SizedBox(height: 20),
-                Image.asset(
-                  'Imagenes/comida.png',
-                  height: 160,
-                  width: 160,
+                  child: estadisticaalimento(
+                    endDate: selectedDate2 ?? DateTime.now(),
+                    startDate: selectedDate ?? DateTime.now(),
+                  ),
                 ),
               ],
             ),

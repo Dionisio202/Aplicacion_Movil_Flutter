@@ -7,8 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
 class sql {
-  static final DateTime startDate = DateTime.now().toUtc();
-  static final DateTime endDate = DateTime.now().toUtc();
+  static DateTime startDate = DateTime.now().toUtc();
+  static DateTime endDate = DateTime.now().toUtc();
   static String nombreuser = '';
   static String correouser = '';
   static List<DateTime> miArrayGlobal = [];
@@ -346,7 +346,8 @@ class sql {
   Future<List<Expenses>> obtenerAlimentoCalorias() async {
     initializePreferences();
     List<Expenses> data = [];
-
+    print(startDate);
+    print(endDate);
     try {
       var formattedDate = DateFormat('yyyy-MM-dd').format(startDate);
       var formattedDate2 = DateFormat('yyyy-MM-dd').format(endDate);
