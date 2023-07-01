@@ -48,7 +48,7 @@ class _estadisticaState extends State<estadisticaalimento> {
         domainFn: (v, i) => v.nombreAlimento,
         measureFn: (v, i) => v.caloriasAlimento,
         data: data,
-        colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color(0xFF4095E5)),
+        colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color(0xFF3F95C2)),
       ),
     ];
     estadisticaalimento(

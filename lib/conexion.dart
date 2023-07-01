@@ -319,15 +319,12 @@ class sql {
         for (var row in result) {
           var id = row['ID_ALI'] as int;
 
-          var now = DateTime.now();
-          var formattedDate = DateFormat('yyyy-MM-dd').format(now);
-
           await conn.query(
             'INSERT INTO DETALLE_ALIMENTOS (COR_ELE, ID_ALI, FEC_ALI) VALUES (?, ?, ?)',
             [
               email,
               id,
-              formattedDate,
+              startDate,
             ],
           );
         }
