@@ -280,6 +280,7 @@ class _AlimentacionState extends State<Alimentacion> {
                     startDate: selectedDate ?? DateTime.now(),
                   ),
                 ),
+                SizedBox(height: 20),
               ],
             ),
           ),

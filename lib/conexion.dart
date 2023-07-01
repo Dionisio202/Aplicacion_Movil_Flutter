@@ -350,15 +350,24 @@ class sql {
       var formattedDate2 = DateFormat('yyyy-MM-dd').format(endDate);
       final conn = await MySqlConnection.connect(settings);
       var result = await conn.query(
-          'SELECT NOM_ALI, CAL_ALI FROM ALIMENTOS WHERE ID_ALI IN (SELECT ID_ALI FROM DETALLE_ALIMENTOS WHERE COR_ELE = ? AND FEC_ALI BETWEEN ? AND ?)',
+          'SELECT A.NOM_ALI, SUM(A.CAL_ALI) AS SUMA_CALORIAS '
+          'FROM ALIMENTOS A '
+          'JOIN DETALLE_ALIMENTOS DA ON A.ID_ALI = DA.ID_ALI '
+          'JOIN USUARIOS U ON DA.COR_ELE = U.COR_ELE '
+          'WHERE U.COR_ELE = ? AND DA.FEC_ALI BETWEEN ? AND ? '
+          'GROUP BY A.NOM_ALI',
           [email, formattedDate, formattedDate2]);
 
       if (result.isNotEmpty) {
         print("Se obtienen datos");
+
         for (var row in result) {
           var nombreAlimento = row['NOM_ALI'];
-          var caloriasAlimento = int.parse(row['CAL_ALI'].toString());
-          data.add(Expenses(nombreAlimento, caloriasAlimento.toDouble()));
+          print(nombreAlimento);
+          var caloriasAlimento =
+              double.tryParse(row['SUMA_CALORIAS'].toString()) ?? 0.0;
+          print(caloriasAlimento);
+          data.add(Expenses(nombreAlimento, caloriasAlimento));
         }
       }
 
