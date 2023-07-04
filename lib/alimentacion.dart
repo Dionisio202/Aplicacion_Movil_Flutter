@@ -198,16 +198,36 @@ class _AlimentacionState extends State<Alimentacion> {
                 ElevatedButton(
                   onPressed: () {
                     if (fecha && fecha2) {
-                      sql.obtenerfecha(selectedDate!, selectedDate2!);
-                      sql().obtenerAlimentoCalorias();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Carga(),
-                        ),
-                      );
+                      if (selectedDate2!.isAfter(selectedDate!) ||
+                          selectedDate == selectedDate2) {
+                        sql.obtenerfecha(selectedDate!, selectedDate2!);
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Carga(),
+                          ),
+                        );
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              content:
+                                  const Text('Seleccione una fecha válida'),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: Text('Cerrar'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
                     } else {
-                      print("hola");
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {

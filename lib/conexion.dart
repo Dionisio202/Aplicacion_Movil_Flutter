@@ -359,14 +359,12 @@ class sql {
           [email, formattedDate, formattedDate2]);
 
       if (result.isNotEmpty) {
-        print("Se obtienen datos");
-
         for (var row in result) {
           var nombreAlimento = row['NOM_ALI'];
-          print(nombreAlimento);
+
           var caloriasAlimento =
               double.tryParse(row['SUMA_CALORIAS'].toString()) ?? 0.0;
-          print(caloriasAlimento);
+
           data.add(Expenses(nombreAlimento, caloriasAlimento));
         }
       }
@@ -377,5 +375,28 @@ class sql {
     }
 
     return data;
+  }
+
+  Future<String> obtenerCal(String ALI) async {
+    String nom = '';
+
+    try {
+      final conn = await MySqlConnection.connect(settings);
+      var result = await conn
+          .query('SELECT CAL_ALI FROM ALIMENTOS WHERE NOM_ALI=?', [ALI]);
+
+      if (result.isNotEmpty) {
+        for (var row in result) {
+          var nombreAlimento = row['CAL_ALI'] as int;
+          nom = nombreAlimento.toString();
+        }
+      }
+
+      await conn.close();
+    } catch (e) {
+      print("$e");
+    }
+
+    return nom;
   }
 }

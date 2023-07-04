@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'alimentacion.dart';
 import 'barramenuali.dart';
+import 'conexion.dart';
 
 class Carga extends StatefulWidget {
   @override
@@ -24,6 +25,7 @@ class _CargaState extends State<Carga> with SingleTickerProviderStateMixin {
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         _redirigir();
+        sql().obtenerAlimentoCalorias();
       }
     });
 
