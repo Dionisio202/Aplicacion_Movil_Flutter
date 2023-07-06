@@ -380,7 +380,7 @@ class _RegisterState extends State<Register> {
                         NumberPicker(
                           value: _selectedHeight,
                           minValue: 0,
-                          maxValue: 300,
+                          maxValue: 230,
                           onChanged: (value) {
                             setState(() {
                               _selectedHeight = value;
@@ -424,7 +424,7 @@ class _RegisterState extends State<Register> {
                         NumberPicker(
                           value: _selectedWeight,
                           minValue: 0,
-                          maxValue: 200,
+                          maxValue: 150,
                           onChanged: (value) {
                             setState(() {
                               _selectedWeight = value;

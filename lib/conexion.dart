@@ -181,6 +181,7 @@ class sql {
         return false;
       }
     } catch (e) {
+      print(e);
       showDialog(
         context: context,
         builder: (BuildContext context) {

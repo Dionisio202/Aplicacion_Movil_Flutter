@@ -25,7 +25,6 @@ class _CargaState extends State<Carga> with SingleTickerProviderStateMixin {
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         _redirigir();
-        sql().obtenerAlimentoCalorias();
       }
     });
 
@@ -35,6 +34,7 @@ class _CargaState extends State<Carga> with SingleTickerProviderStateMixin {
   void _redirigir() {
     setState(() {
       _isLoading = false;
+      sql().obtenerAlimentoCalorias();
     });
 
     Navigator.pushReplacement(
