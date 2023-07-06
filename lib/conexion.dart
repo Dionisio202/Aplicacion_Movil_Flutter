@@ -21,11 +21,11 @@ class sql {
   }
 
   final settings = ConnectionSettings(
-    host: 'bdmaqgeqcojjnmapceth-mysql.services.clever-cloud.com',
+    host: 'sql10.freesqldatabase.com',
     port: 3306,
-    user: 'ufaomtpab6ngtxtl',
-    password: 'ouVHL4pCZexLZWKJu1fT',
-    db: 'bdmaqgeqcojjnmapceth',
+    user: 'sql10631019',
+    password: 'VD3yChUqNi',
+    db: 'sql10631019',
   );
 
   Future<bool> insertarRegistro(
