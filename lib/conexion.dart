@@ -315,7 +315,8 @@ class sql {
         'SELECT ID_ALI FROM ALIMENTOS WHERE  NOM_ALI = ?',
         [alimento],
       );
-
+      DateTime now = DateTime.now();
+      String formattedDate = DateFormat('dd/MM/yyyy').format(now);
       if (result.isNotEmpty) {
         for (var row in result) {
           var id = row['ID_ALI'] as int;
@@ -325,7 +326,7 @@ class sql {
             [
               email,
               id,
-              startDate,
+              formattedDate,
             ],
           );
         }
