@@ -19,7 +19,7 @@ class _CargaState extends State<Carga> with SingleTickerProviderStateMixin {
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(
-          seconds: 1), // Duración de la animación del círculo de progreso
+          seconds: 3), // Duración de la animación del círculo de progreso
     );
 
     _animationController.addStatusListener((status) {

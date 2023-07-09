@@ -315,8 +315,8 @@ class sql {
         'SELECT ID_ALI FROM ALIMENTOS WHERE  NOM_ALI = ?',
         [alimento],
       );
-      DateTime now = DateTime.now();
-      String formattedDate = DateFormat('dd/MM/yyyy').format(now);
+      DateTime now = DateTime.now().subtract(Duration(hours: 5));
+      String formattedDate = DateFormat('yyyy-MM-dd').format(now);
       if (result.isNotEmpty) {
         for (var row in result) {
           var id = row['ID_ALI'] as int;
@@ -348,8 +348,10 @@ class sql {
     print(startDate);
     print(endDate);
     try {
-      var formattedDate = DateFormat('yyyy-MM-dd').format(startDate);
-      var formattedDate2 = DateFormat('yyyy-MM-dd').format(endDate);
+      var formattedDate = DateFormat('yyyy-MM-dd')
+          .format(startDate.subtract(Duration(hours: 5)));
+      var formattedDate2 =
+          DateFormat('yyyy-MM-dd').format(endDate.subtract(Duration(hours: 5)));
       final conn = await MySqlConnection.connect(settings);
       var result = await conn.query(
           'SELECT A.NOM_ALI, SUM(A.CAL_ALI) AS SUMA_CALORIAS '
