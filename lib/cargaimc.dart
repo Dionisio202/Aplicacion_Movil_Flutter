@@ -1,0 +1,83 @@
+import 'package:flutter/material.dart';
+
+import 'alimentacion.dart';
+import 'barraMenuest.dart';
+import 'barramenuali.dart';
+import 'conexion.dart';
+
+class cargaimc extends StatefulWidget {
+  @override
+  _CargaState createState() => _CargaState();
+}
+
+class _CargaState extends State<cargaimc> with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(
+          seconds: 3), // Duración de la animación del círculo de progreso
+    );
+
+    _animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _redirigir();
+      }
+    });
+
+    _animationController.forward();
+  }
+
+  void _redirigir() {
+    setState(() {
+      _isLoading = false;
+      sql().obtenerAlimentoCalorias();
+    });
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => menuest(),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Sus datos se estan cargando....',
+              style: TextStyle(color: Colors.white),
+            ),
+            SizedBox(height: 60),
+            AnimatedBuilder(
+              animation: _animationController,
+              builder: (BuildContext context, Widget? child) {
+                // Agregamos el signo de interrogación (?) para hacer que el argumento 'child' sea opcional
+                return CircularProgressIndicator(
+                  value: _animationController.value,
+                  color: Colors.white,
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

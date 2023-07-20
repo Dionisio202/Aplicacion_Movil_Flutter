@@ -17,10 +17,7 @@ class _estadisticaState extends State<estadistica> {
   Widget build(BuildContext context) {
     final data = [
       Expenses(DateTime(2023, 1, 1), 22.0),
-      Expenses(DateTime(2023, 2, 2), 21.5),
-      Expenses(DateTime(2023, 3, 3), 20.8),
-      Expenses(DateTime(2023, 4, 4), 21.2),
-      Expenses(DateTime(2023, 5, 5), 22.5),
+      Expenses(DateTime(2023, 1, 2), 22.0),
     ];
     List<charts.Series<Expenses, DateTime>> series = [
       charts.Series<Expenses, DateTime>(
